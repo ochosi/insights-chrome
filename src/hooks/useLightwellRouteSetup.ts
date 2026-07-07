@@ -6,12 +6,6 @@ import { LIGHTWELL_PATH } from '../utils/common';
 const FELT_THEME_CLASS = 'pf-v6-theme-felt';
 const GLASS_THEME_CLASS = 'pf-v6-theme-glass';
 
-const isLightwellRoute = window.location.pathname === LIGHTWELL_PATH || window.location.pathname.startsWith(`${LIGHTWELL_PATH}/`);
-
-if (isLightwellRoute) {
-  document.documentElement.classList.add(FELT_THEME_CLASS, GLASS_THEME_CLASS);
-}
-
 type UseLightwellRouteSetupOptions = {
   enabled?: boolean;
 };
@@ -20,8 +14,10 @@ type UseLightwellRouteSetupOptions = {
  * Applies Lightwell felt + glass themes synchronously before paint.
  * Also forces glass via layoutForceGlassThemeAtom for Header toolbar state.
  *
- * Theme classes are also applied eagerly at module-eval time (above) so they
- * survive the AppPlaceholder → Lightwell component transition without a gap.
+ * The initial CSS classes are applied eagerly at module-eval time in
+ * releaseAtom.ts (main bundle) so they are present before any React render.
+ * This hook handles the lifecycle: re-applying on mount and cleaning up on
+ * unmount when navigating away from Lightwell routes.
  */
 const useLightwellRouteSetup = ({ enabled = true }: UseLightwellRouteSetupOptions = {}) => {
   const setLayoutForceGlassTheme = useSetAtom(layoutForceGlassThemeAtom);

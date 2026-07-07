@@ -10,6 +10,10 @@ import { LIGHTWELL_PATH } from '../../utils/common';
 
 const isLightwellPath = window.location.pathname.startsWith(LIGHTWELL_PATH);
 
+if (isLightwellPath) {
+  document.documentElement.classList.add('pf-v6-theme-felt', 'pf-v6-theme-glass');
+}
+
 export const previewModalOpenAtom = atomWithToggle(false);
 
 const HIDE_PREVIEW_BANNER_KEY = 'chrome:preview:banner:hide';
